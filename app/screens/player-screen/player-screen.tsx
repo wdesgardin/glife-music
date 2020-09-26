@@ -20,21 +20,17 @@ import { formatTimestamp } from "../../utils/time"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { useCurrentTrack, useIsPlaying } from "../../utils/track-player"
 
-const FULL: ViewStyle = { flex: 1 }
 const CONTAINER: ViewStyle = {
-    backgroundColor: color.transparent,
+    flex: 1,
 }
 
 const BOLD: TextStyle = { fontWeight: "bold" }
 
 const PLAYER_PAGE: ViewStyle = {
+    backgroundColor: color.transparent,
     paddingLeft: spacing[5],
     paddingRight: spacing[5],
     display: "flex",
-}
-
-const PLAYER_CONTENT: ViewStyle = {
-    flex: 1,
 }
 
 const MUSIC_INFOS: ViewStyle = {
@@ -164,7 +160,7 @@ const MUSIC_BUTTONS_FOOTER: ViewStyle = {
     bottom: 0,
     left: 0,
     height: 75,
-    width: "85%"
+    width: "85%",
 }
 
 const BUTTON_SVG_2: ViewStyle = {
@@ -210,7 +206,6 @@ export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ naviga
     const { position, duration } = useProgress(100)
     const progress = Math.round((position * 100) / duration)
 
-
     useLayoutEffect(() => {
         navigation.setOptions({ tabBarVisible: false })
     }, [navigation, route])
@@ -236,98 +231,82 @@ export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ naviga
     }, [track])
 
     return (
-        <View style={FULL}>
-            <Screen style={CONTAINER} preset="scroll" backgroundColor={backgroundColor}>
-                {/* Player container */}
-                <View style={{ ...PLAYER_PAGE, marginTop: headerHeight - 16 }}>
-                    <View style={PLAYER_CONTENT}>
-                        <View style={MUSIC_INFOS}>
-                            <View style={MUSIC_STREAM}>
-                                <Text style={{ ...BOLD, ...H3 }}>{currentMusic?.views}</Text>
-                                <Text style={H3}> ÉCOUTES</Text>
-                            </View>
-                            <View style={MUSIC_LIKES}>
-                                <Text style={{ ...BOLD, ...H3 }}>{currentMusic?.likes}</Text>
-                                <Text style={H3}> J'AIME</Text>
-                            </View>
-                        </View>
-                        <View style={MUSIC_INFOS_FOOTER}>
-                            <View style={H4}>
-                                <Text style={{ ...BOLD, ...H4 }}>
-                                    {currentMusic?.createdAt
-                                        ? new Date(
-                                              currentMusic.createdAt * 1000,
-                                          ).toLocaleDateString()
-                                        : "Récemment"}
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={MUSIC_COVER}>
-                            <Image source={{ uri: track?.artwork as string }} style={COVER_IMAGE} />
-                        </View>
-                        <View style={MUSIC_DETAILS}>
-                            <ShareIcon style={MUSIC_SHARE_ICON} fill={"white"} />
-                            <View style={MUSIC_DETAILS_TEXT}>
-                                <Text style={H2}>{track?.title}</Text>
-                                <Text style={H3}>{track?.artist}</Text>
-                            </View>
-                            <HeartIcon
-                                style={HEART_ICON}
-                                fill={currentMusic?.liked ? "#32d74b" : "white"}
-                            />
-                        </View>
-                        <View style={MUSIC_TIMING}>
-                            <Text style={TIMING_TEXT}>{formatTimestamp(position)}</Text>
-                            <Text style={TIMING_TEXT}>{formatTimestamp(duration)}</Text>
-                        </View>
-                        <View style={MUSIC_TIMER_BAR}>
-                            <View style={MUSIC_LINE}>
-                                <View
-                                    style={{
-                                        ...MUSIC_LINE_PROGRESS,
-                                        width: progress + "%",
-                                    }}
-                                ></View>
-                                <View
-                                    style={{ ...MUSIC_LINE_CIRCLE, marginLeft: progress + "%" }}
-                                ></View>
-                            </View>
-                        </View>
+        <Screen style={CONTAINER} preset="scroll" backgroundColor={backgroundColor} showPlayerPreview={true}>
+            <View style={{ ...PLAYER_PAGE, marginTop: headerHeight - 16 }}>
+                <View style={MUSIC_INFOS}>
+                    <View style={MUSIC_STREAM}>
+                        <Text style={{ ...BOLD, ...H3 }}>{currentMusic?.views}</Text>
+                        <Text style={H3}> ÉCOUTES</Text>
                     </View>
-                    <View style={MUSIC_BUTTONS_FOOTER}>
-                        <RandomIcon style={BUTTON_SVG_2} fill="white" />
-                        <TouchableOpacity>
-                            <PreviousIcon
-                                style={BUTTON_SVG_2}
-                                onPress={TrackPlayer.skipToPrevious}
-                                fill="white"
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={isPlaying ? TrackPlayer.pause : TrackPlayer.play}
-                            style={PLAY_BUTTON}
-                        >
-                            {isPlaying ? (
-                                <PauseFillIcon style={PLAY_ICON} fill="white" />
-                            ) : (
-                                <PlayFillIcon
-                                    style={{ ...PLAY_ICON, marginLeft: 6 }}
-                                    fill="white"
-                                />
-                            )}
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <NextIcon
-                                style={BUTTON_SVG_2}
-                                onPress={TrackPlayer.skipToNext}
-                                fill="white"
-                            />
-                        </TouchableOpacity>
-                        <RepeatIcon style={BUTTON_SVG_3} fill="white" />
+                    <View style={MUSIC_LIKES}>
+                        <Text style={{ ...BOLD, ...H3 }}>{currentMusic?.likes}</Text>
+                        <Text style={H3}> J'AIME</Text>
                     </View>
                 </View>
-            </Screen>
-        </View>
+                <View style={MUSIC_INFOS_FOOTER}>
+                    <View style={H4}>
+                        <Text style={{ ...BOLD, ...H4 }}>
+                            {currentMusic?.createdAt
+                                ? new Date(currentMusic.createdAt * 1000).toLocaleDateString()
+                                : "Récemment"}
+                        </Text>
+                    </View>
+                </View>
+                <View style={MUSIC_COVER}>
+                    <Image source={{ uri: track?.artwork as string }} style={COVER_IMAGE} />
+                </View>
+                <View style={MUSIC_DETAILS}>
+                    <ShareIcon style={MUSIC_SHARE_ICON} fill={"white"} />
+                    <View style={MUSIC_DETAILS_TEXT}>
+                        <Text style={H2}>{track?.title}</Text>
+                        <Text style={H3}>{track?.artist}</Text>
+                    </View>
+                    <HeartIcon
+                        style={HEART_ICON}
+                        fill={currentMusic?.liked ? "#32d74b" : "white"}
+                    />
+                </View>
+                <View style={MUSIC_TIMING}>
+                    <Text style={TIMING_TEXT}>{formatTimestamp(position)}</Text>
+                    <Text style={TIMING_TEXT}>{formatTimestamp(duration)}</Text>
+                </View>
+                <View style={MUSIC_TIMER_BAR}>
+                    <View style={MUSIC_LINE}>
+                        <View
+                            style={{
+                                ...MUSIC_LINE_PROGRESS,
+                                width: progress + "%",
+                            }}
+                        ></View>
+                        <View style={{ ...MUSIC_LINE_CIRCLE, marginLeft: progress + "%" }}></View>
+                    </View>
+                </View>
+            </View>
+            <View style={MUSIC_BUTTONS_FOOTER}>
+                <RandomIcon style={BUTTON_SVG_2} fill="white" />
+                <TouchableOpacity>
+                    <PreviousIcon
+                        style={BUTTON_SVG_2}
+                        onPress={TrackPlayer.skipToPrevious}
+                        fill="white"
+                    />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={isPlaying ? TrackPlayer.pause : TrackPlayer.play}
+                    style={PLAY_BUTTON}
+                >
+                    {isPlaying ? (
+                        <PauseFillIcon style={PLAY_ICON} fill="white" />
+                    ) : (
+                        <PlayFillIcon style={{ ...PLAY_ICON, marginLeft: 6 }} fill="white" />
+                    )}
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <NextIcon style={BUTTON_SVG_2} onPress={TrackPlayer.skipToNext} fill="white" />
+                </TouchableOpacity>
+                <RepeatIcon style={BUTTON_SVG_3} fill="white" />
+            </View>
+        </Screen>
     )
 })

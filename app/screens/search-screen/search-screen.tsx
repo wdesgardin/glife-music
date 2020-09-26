@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
 import { useStores } from "../../models"
-import { Screen, Wallpaper } from "../../components"
+import { Screen } from "../../components"
 import {
     FlatList,
     GestureResponderEvent,
@@ -22,10 +22,6 @@ import { setPlayerQueue } from "../../utils/track-player"
 import { useNavigation } from "@react-navigation/native"
 
 const { S3_URL } = require("../../config/env")
-
-const SCREEN_CONTAINER: ViewStyle = {
-    flex: 1,
-}
 
 const COVER_IMAGE: ImageStyle = {
     aspectRatio: 1,
@@ -98,25 +94,22 @@ export const SearchScreen = observer(function SearchScreen() {
     }
 
     return (
-        <View style={SCREEN_CONTAINER}>
-            <Wallpaper />
-            <Screen backgroundColor={color.transparent}>
-                <SearchBar
-                    value={search}
-                    onChangeText={setSearch}
-                    style={SEARCH}
-                    inputStyle={INPUT}
-                    placeholder={translate("common.search")}
-                    cancelText={translate("common.cancel")}
-                    theme="dark"
-                />
-                <FlatList
-                    scrollEnabled={true}
-                    data={musics}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                />
-            </Screen>
-        </View>
+        <Screen showPlayerPreview={true}>
+            <SearchBar
+                value={search}
+                onChangeText={setSearch}
+                style={SEARCH}
+                inputStyle={INPUT}
+                placeholder={translate("common.search")}
+                cancelText={translate("common.cancel")}
+                theme="dark"
+            />
+            <FlatList
+                scrollEnabled={true}
+                data={musics}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
+        </Screen>
     )
 })

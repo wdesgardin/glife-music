@@ -1,12 +1,10 @@
 import React, { useState } from "react"
 import { observer } from "mobx-react-lite"
 import { useStores } from "../../models"
-import { Header, Screen, Wallpaper } from "../../components"
+import { Header, Screen } from "../../components"
 import {
-	FlatList,
 	GestureResponderEvent,
 	ImageStyle,
-	Platform,
 	TextStyle,
 	TouchableOpacity,
 	View,
@@ -26,16 +24,6 @@ const CONTAINER: ViewStyle = {
 	backgroundColor: color.transparent,
 }
 
-const FULL: ViewStyle = {
-	display: 'flex',
-	flex: 1,
-}
-
-const PLAYLIST_PAGE: ViewStyle = {
-	display: 'flex',
-	padding: spacing[3],
-	flex: 1
-}
 
 const PLAYLISTS_CONTAINER: ViewStyle = {
 	marginTop: spacing[3],
@@ -145,25 +133,22 @@ export const PlaylistScreen = observer(function SearchScreen() {
 	const displayUserPlaylists = userPlaylists.length > 0;
 
 	return (
-		<View style={FULL}>
-			<Wallpaper />
-			<Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-				<Header headerTx="homeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
-				{displayUserPlaylists ? (
-					<View style={PLAYLISTS_CONTAINER}>
-						<Text numberOfLines={1} style={H3}>Mes playlists</Text>
-						<View style={PLAYLISTS_ITEM_CONTAINER}>
-							{userPlaylists.map((pl, key) => renderPlaylist(pl, key))}
-						</View>
-					</View>
-				) : null}
-				<View style={{ ...PLAYLISTS_CONTAINER, ...(displayUserPlaylists ? { marginTop: 0 } : {}) }}>
-					<Text numberOfLines={1} style={H3}>Playlists officielles</Text>
+		<Screen style={CONTAINER} preset="scroll" showPlayerPreview={true}>
+			<Header headerTx="homeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
+			{displayUserPlaylists ? (
+				<View style={PLAYLISTS_CONTAINER}>
+					<Text numberOfLines={1} style={H3}>Mes playlists</Text>
 					<View style={PLAYLISTS_ITEM_CONTAINER}>
-						{officialPlaylist.map((pl, key) => renderPlaylist(pl, key))}
+						{userPlaylists.map((pl, key) => renderPlaylist(pl, key))}
 					</View>
 				</View>
-			</Screen>
-		</View>
+			) : null}
+			<View style={{ ...PLAYLISTS_CONTAINER, ...(displayUserPlaylists ? { marginTop: 0 } : {}) }}>
+				<Text numberOfLines={1} style={H3}>Playlists officielles</Text>
+				<View style={PLAYLISTS_ITEM_CONTAINER}>
+					{officialPlaylist.map((pl, key) => renderPlaylist(pl, key))}
+				</View>
+			</View>
+		</Screen>
 	)
 })
