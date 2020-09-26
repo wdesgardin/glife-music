@@ -97,14 +97,6 @@ const BUTTON_SVG: ViewStyle = {
     height: 26,
 }
 
-const MUSIC_SHARE_ICON: ViewStyle = {
-    ...BUTTON_SVG,
-}
-
-const HEART_ICON: ViewStyle = {
-    ...BUTTON_SVG,
-}
-
 const MUSIC_TIMING: ViewStyle = {
     display: "flex",
     justifyContent: "space-between",
@@ -149,31 +141,18 @@ const MUSIC_LINE_CIRCLE: ViewStyle = {
 
 const MUSIC_BUTTONS_FOOTER: ViewStyle = {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
     flexDirection: "row",
-    alignContent: "center",
     alignItems: "center",
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: "auto",
-    marginRight: "auto",
-    bottom: 0,
-    left: 0,
-    height: 75,
-    width: "85%",
+    paddingVertical: 20,
 }
 
-const BUTTON_SVG_2: ViewStyle = {
-    ...BUTTON_SVG,
+const PLAYER_BUTTON: ViewStyle = {
     width: 24,
     height: 24,
+    marginHorizontal: 20
 }
 
-const BUTTON_SVG_3: ViewStyle = {
-    ...BUTTON_SVG,
-    width: 20,
-    height: 20,
-}
 
 const PLAY_ICON: ViewStyle = {
     width: 38,
@@ -190,8 +169,6 @@ const PLAY_BUTTON: ViewStyle = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: -15,
-    marginRight: -15,
 }
 
 export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ navigation, route }) {
@@ -231,7 +208,7 @@ export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ naviga
     }, [track])
 
     return (
-        <Screen style={CONTAINER} preset="scroll" backgroundColor={backgroundColor} showPlayerPreview={true}>
+        <Screen style={CONTAINER} preset="scroll" backgroundColor={backgroundColor}>
             <View style={{ ...PLAYER_PAGE, marginTop: headerHeight - 16 }}>
                 <View style={MUSIC_INFOS}>
                     <View style={MUSIC_STREAM}>
@@ -256,13 +233,13 @@ export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ naviga
                     <Image source={{ uri: track?.artwork as string }} style={COVER_IMAGE} />
                 </View>
                 <View style={MUSIC_DETAILS}>
-                    <ShareIcon style={MUSIC_SHARE_ICON} fill={"white"} />
+                    <ShareIcon style={BUTTON_SVG} fill={"white"} />
                     <View style={MUSIC_DETAILS_TEXT}>
                         <Text style={H2}>{track?.title}</Text>
                         <Text style={H3}>{track?.artist}</Text>
                     </View>
                     <HeartIcon
-                        style={HEART_ICON}
+                        style={BUTTON_SVG}
                         fill={currentMusic?.liked ? "#32d74b" : "white"}
                     />
                 </View>
@@ -283,10 +260,10 @@ export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ naviga
                 </View>
             </View>
             <View style={MUSIC_BUTTONS_FOOTER}>
-                <RandomIcon style={BUTTON_SVG_2} fill="white" />
+                <RandomIcon style={PLAYER_BUTTON} fill="white" />
                 <TouchableOpacity>
                     <PreviousIcon
-                        style={BUTTON_SVG_2}
+                        style={PLAYER_BUTTON}
                         onPress={TrackPlayer.skipToPrevious}
                         fill="white"
                     />
@@ -303,9 +280,9 @@ export const PlayerScreen: React.FC<any> = observer(function HomeScreen({ naviga
                     )}
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <NextIcon style={BUTTON_SVG_2} onPress={TrackPlayer.skipToNext} fill="white" />
+                    <NextIcon style={PLAYER_BUTTON} onPress={TrackPlayer.skipToNext} fill="white" />
                 </TouchableOpacity>
-                <RepeatIcon style={BUTTON_SVG_3} fill="white" />
+                <RepeatIcon style={PLAYER_BUTTON} fill="white" />
             </View>
         </Screen>
     )
